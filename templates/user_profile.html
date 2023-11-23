@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль пользователя</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Стили для заголовков */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #1e90ff; /* Голубой цвет для заголовка */
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #ff6347; /* Оранжевый цвет для второстепенных заголовков */
+}
+
+/* Стили для контейнера данных пользователя */
+div {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для данных пользователя */
+p {
+    margin-bottom: 8px;
+    color: #555; /* Цвет текста для обычных данных пользователя */
+}
+
+strong {
+    font-weight: bold;
+    color: #008000; /* Зеленый цвет для выделения */
+}
+
+/* Добавление стилей для определенных элементов */
+/* Например, для логина и email */
+p:nth-of-type(2n) {
+    color: #8a2be2; /* Фиолетовый цвет для четных параграфов */
+}
+
+    </style>
+</head>
+<body>
+    <h1>Профиль пользователя</h1>
+    <div>
+        <h2>Данные пользователя:</h2>
+        <p><strong>Логин:</strong> {{ user[0] }}</p>
+        <p><strong>Email:</strong> {{ user[2] }}</p>
+        <p><strong>Вы вошли под:</strong> {{ user[3] }}</p>
+         <form action="/change_password" method="post">
+            <h2>Изменить пароль:</h2>
+            <label for="new-password">Новый пароль:</label>
+            <input type="password" id="new-password" name="new-password" required>
+            <br>
+            <label for="confirm-password">Подтвердите пароль:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+            <br>
+            <input type="submit" value="Изменить">
+        </form>
+        <p id="password-change-message" style="color: green; display: none;">Пароль успешно изменен</p>
+        <script>
+
+</script>
+
+    </div>
+</body>
+</html>

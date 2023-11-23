@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Успешный вход</title>
+</head>
+<body>
+    <section class="login-success">
+        <h2>Вы успешно вошли в свой аккаунт!</h2>
+        <a href="{{ url_for('show_user_profile', username=session['user']) }}">Личный кабинет</a>
+    </section>
+</body>
+</html>

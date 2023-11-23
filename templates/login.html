@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Войдите в свой аккаунт</title>
+</head>
+<body>
+    <section class="login">
+        <h2>Войдите в свой аккаунт</h2>
+        <form action="/login" method="post">
+            <label for="loginUsername">Логин:</label>
+            <input type="text" id="loginUsername" name="loginUsername" required>
+            
+            <label for="loginPassword">Пароль:</label>
+            <input type="password" id="loginPassword" name="loginPassword" required>
+            
+            <button type="submit">Войти</button>
+        </form>
+        <a href="{{ url_for('show_user_profile', username=session['user']) }}">Личный кабинет</a>
+    </section>
+
+</body>
+</html>

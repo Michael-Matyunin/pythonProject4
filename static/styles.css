@@ -1,0 +1,207 @@
+/* Стилизация основного контейнера */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Стилизация шапки */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000; /* Устанавливаем z-index, чтобы шапка была поверх других элементов */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Используем flexbox */
+    justify-content: space-between; /* Равномерно распределяем элементы по ширине */
+    align-items: center; /* Выравниваем элементы по вертикали */
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.right-btns {
+    margin-left: auto; /* Перемещаем кнопки вправо */
+}
+
+/* Стилизация основного контента */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 0;
+  background-color: #f8f8f8;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(45deg, #ff4500, #e63900);
+  opacity: 0.8;
+  z-index: -1;
+  transition: opacity 0.5s ease;
+}
+
+.hero:hover:before {
+  opacity: 1;
+}
+
+.animated-header {
+  font-size: 3em;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Стилизация футера */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    position: fixed; /* Позволяет фиксировать футер внизу страницы */
+    bottom: 0; /* Располагаем футер внизу */
+    width: 100%; /* Растягиваем футер на всю ширину экрана */
+}
+
+
+
+
+/* Войти */
+
+/* Общие стили для центрирования содержимого */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-size: 18px;
+    background-color: #f4f4f4; /* Цвет фона страницы */
+    color: #333; /* Цвет текста */
+}
+
+/* Стили для блока регистрации */
+.login {
+    text-align: center;
+    background-color: #fff; /* Цвет фона формы */
+    border-radius: 8px; /* Закругляем углы формы */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+}
+
+.login form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    background-color: #fff;
+    color: #000000;
+    border: 2px solid #000000; /* Обводка черным цветом */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login form label,
+.login form input,
+.login form button {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.login form button {
+    padding: 10px;
+    display: block;
+    background-color: #4CAF50;
+    color: #fff;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* styles.css */
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* Стили для заголовка таблицы */
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Стили для альтернативных строк таблицы */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Стили для первой колонки */
+tbody td:first-child {
+    font-weight: bold;
+}
+
+/* Общие стили для страницы */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+

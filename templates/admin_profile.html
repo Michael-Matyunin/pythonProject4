@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль администратора</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Стили тут */
+    </style>
+</head>
+<body>
+    <h1>Профиль администратора</h1>
+    <div>
+        <h2>Данные пользователя:</h2>
+        <form action="/view_user_data" method="post">
+            <label for="user-login">Логин пользователя:</label>
+            <input type="text" id="user-login" name="user-login" required>
+            <input type="submit" value="Просмотреть">
+        </form>
+        <hr>
+        <div id="user-data" style="display: none;">
+            <p><strong>Логин:</strong> <span id="user-login-display"></span></p>
+            <p><strong>Email:</strong> <span id="user-email-display"></span></p>
+            <p><strong>Пароль:</strong> <span id="user-password-display"></span></p>
+        </div>
+    </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('user-login').value;
+
+            fetch(`/user_profile/${userInput}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('user-login-display').textContent = data[0];
+                        document.getElementById('user-email-display').textContent = data[1];
+                        document.getElementById('user-password-display').textContent = data[2];
+                        document.getElementById('user-data').style.display = 'block';
+                    } else {
+                        alert('Пользователь не найден');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        });
+    </script>
+</body>
+</html>

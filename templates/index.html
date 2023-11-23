@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн кинотеатр</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Любые другие стили или скрипты -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Главная</a></li>
+                <li><a href="#">Фильмы</a></li>
+                <li><a href="#">Контакты</a></li>
+                <li class="right-btns">
+                    <a href="{{ url_for('login') }}" class="auth-btn">Войти</a>
+                    <a href="{{ url_for('register') }}" class="register-btn">Регистрация</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1 class="animated-header">Добро пожаловать!</h1>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <footer>
+        <p>&copy; 2023 Разработка баз данных</p>
+    </footer>
+</body>
+</html>
