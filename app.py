@@ -11,9 +11,11 @@ mydb = mysql.connector.connect(
 app = Flask(__name__, template_folder='templates')
 app.secret_key = '3794374927492734092749274'
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -36,6 +38,7 @@ def register():
         return redirect(url_for('show_user_profile', username=login))
 
     return render_template('register.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -67,11 +70,11 @@ def login():
         finally:
             mycursor.close()
 
-
     return render_template('login.html')
 
 
 import json
+
 
 # Вместо возврата HTML вернем данные в формате JSON
 @app.route('/sort_subscriptions', methods=['POST'])
@@ -84,12 +87,6 @@ def sort_subscriptions():
         return json.dumps(subscriptions)  # Возврат данных в формате JSON
     else:
         return json.dumps({"error": "Произошла ошибка при получении отсортированных подписок."})
-
-
-
-
-
-
 
 
 def get_subscriptions(sort_by=None):
@@ -122,10 +119,12 @@ def show_user_profile(username):
     else:
         return "Пользователь не найден"
 
+
 @app.route('/logout')
 def logout():
     session.pop('user', None)  # Удаляем пользователя из сессии
     return redirect(url_for('index'))  # Перенаправляем на главную страницу
+
 
 @app.route('/change_password', methods=['POST'])
 def change_password():
@@ -159,6 +158,7 @@ def change_password():
     else:
         return "Вы не авторизованы"
 
+
 def get_user_data(username):
     try:
         cursor = mydb.cursor()
@@ -171,6 +171,7 @@ def get_user_data(username):
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
 
+
 @app.route('/user_profile/<username>')
 def show_user_profile_for_Admin(username):
     user_data = get_user_data(username)
@@ -178,6 +179,7 @@ def show_user_profile_for_Admin(username):
         return render_template('user_profile.html', user=user_data)
     else:
         return "Пользователь не найден"
+
 
 @app.route('/movies')
 def get_movies_data():
@@ -200,6 +202,7 @@ def movies():
         return render_template('index.html', movies=movies_data)
     else:
         return "Ошибка получения данных о фильмах"
+
 
 def get_movie_info(movie_id):
     try:
@@ -224,6 +227,7 @@ def get_movie_info(movie_id):
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
 
+
 @app.route('/movie/<int:movie_id>')
 def movie_details(movie_id):
     movie_info = get_movie_info(movie_id)
@@ -231,6 +235,7 @@ def movie_details(movie_id):
         return render_template('movie_details.html', movie_info=movie_info)
     else:
         return "Фильм не найден"
+
 
 @app.route('/get_description/<int:movie_id>')
 def get_description(movie_id):
