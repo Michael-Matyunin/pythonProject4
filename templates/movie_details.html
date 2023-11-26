@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie_info.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ movie_info.title }}</h1>
+    </header>
+
+    <main>
+        <section class="movie-details">
+            <p>Название: {{ movie_info.Title }}</p>
+            <p>Длительность: {{ movie_info.duration }}</p>
+            <p>Год релиза: {{ movie_info.year }}</p>
+            <!-- Дополнительная информация о фильме -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Разработка баз данных</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

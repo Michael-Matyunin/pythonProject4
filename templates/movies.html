@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title> <!-- Используем переменную title для отображения заголовка страницы -->
+    <!-- Здесь подключите ваши стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Фильмы</h1>
+
+    </header>
+
+    <main>
+        <section class="movies">
+            {% for movie in movies %}
+                <div class="movie-tile">
+
+                <p>Название: {{ movie[0] }}</p>
+                <p>Длительность: {{ movie[1] }}</p>
+                <p>Год релиза: {{ movie[2] }}</p>
+                <p>Страна: {{ movie[3] }}</p>
+                <p>Режиссер: {{ movie[4] }}</p>
+                <a href="{{ url_for('movie_details', movie_id=1) }}">Подробнее</a>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Разработка баз данных</p>
+    </footer>
+
+    <!-- Здесь подключите ваши скрипты -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

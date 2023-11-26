@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Онлайн кинотеатр</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <!-- Любые другие стили или скрипты -->
 </head>
 <body>
@@ -12,12 +12,12 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('index') }}">Главная</a></li>
-                <li><a href="#">Фильмы</a></li>
-                <li><a href="#">Контакты</a></li>
-                <li class="right-btns">
-                    <a href="{{ url_for('login') }}" class="auth-btn">Войти</a>
-                    <a href="{{ url_for('register') }}" class="register-btn">Регистрация</a>
-                </li>
+            <li><a href="{{ url_for('movies') }}">Фильмы</a></li> <!-- Добавленная ссылка -->
+            <li><a href="#">Контакты</a></li>
+            <li class="right-btns">
+                <a href="{{ url_for('login') }}" class="auth-btn">Войти</a>
+                <a href="{{ url_for('register') }}" class="register-btn">Регистрация</a>
+            </li>
             </ul>
         </nav>
     </header>
@@ -26,6 +26,8 @@
         <div class="hero">
             <h1 class="animated-header">Добро пожаловать!</h1>
         </div>
+
+
     </main>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
