@@ -17,6 +17,9 @@ def index():
     return render_template('index.html')
 
 
+
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -77,6 +80,9 @@ import json
 
 
 # Вместо возврата HTML вернем данные в формате JSON
+
+
+
 @app.route('/sort_subscriptions', methods=['POST'])
 def sort_subscriptions():
     sort_by = request.form.get('sort_by')
@@ -107,17 +113,150 @@ def get_subscriptions(sort_by=None):
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
 
-
 # Получение данных из таблицы user
 @app.route('/user_profile/<username>')
 def show_user_profile(username):
     user_data = get_user_data(username)
     subscriptions = get_subscriptions()  # Получение подписок
+    directors = get_directors()  # Получение списка режиссеров
+    countries = get_countries()  # Получение списка стран
 
     if user_data:
-        return render_template('user_profile.html', user=user_data, subscriptions=subscriptions)
+        films = get_films()  # Получение фильмов
+        return render_template('user_profile.html', user=user_data, subscriptions=subscriptions, films=films, directors=directors, countries=countries)
     else:
         return "Пользователь не найден"
+
+
+
+
+@app.route('/sort_films', methods=['POST'])
+def sort_films():
+    sort_by = request.form.get('sort_by')
+    films = get_films(sort_by)
+
+    if films:
+        return jsonify(films)
+    else:
+        return jsonify({"error": "Произошла ошибка при получении отсортированных фильмов."})
+
+
+def get_films(sort_by=None):
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT ID_Film, Title, Duration, Year_of_release, Country, Director FROM film"
+
+        if sort_by == 'duration':
+            query += " ORDER BY Duration"
+        elif sort_by == 'year':
+            query += " ORDER BY Year_of_release"
+
+        cursor.execute(query)
+        films = cursor.fetchall()
+        cursor.close()
+
+        # Преобразование данных в список словарей для удобства обработки в шаблоне
+        films_list = []
+        for film in films:
+            film_dict = {
+                'id': film[0],
+                'title': film[1],
+                'duration': film[2],
+                'year': film[3],
+                'country': film[4],
+                'director': film[5]
+            }
+            films_list.append(film_dict)
+
+        return films_list
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return None
+
+
+def get_directors():
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT DISTINCT Director FROM film"
+        cursor.execute(query)
+        directors = cursor.fetchall()
+        cursor.close()
+        return [director[0] for director in directors] if directors else []
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return []
+
+
+def get_countries():
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT DISTINCT Country FROM film"
+        cursor.execute(query)
+        countries = cursor.fetchall()
+        cursor.close()
+        return [country[0] for country in countries] if countries else []
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return []
+def filter_films_by_director(director_name):
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT ID_Film, Title, Duration, Year_of_release, Country, Director FROM film WHERE Director = %s"
+        cursor.execute(query, (director_name,))
+        films = cursor.fetchall()
+        cursor.close()
+        if films:
+            print(f"Найдено фильмов для режиссера '{director_name}': {len(films)}")
+            return films
+        else:
+            print(f"Фильмы для режиссера '{director_name}' не найдены")
+            return []
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return None
+
+def filter_films_by_country(country_name):
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT ID_Film, Title, Duration, Year_of_release, Country, Director FROM film WHERE Country = %s"
+        cursor.execute(query, (country_name,))
+        films = cursor.fetchall()
+        cursor.close()
+        if films:
+            print(f"Найдено фильмов для страны '{country_name}': {len(films)}")
+            return films
+        else:
+            print(f"Фильмы для страны '{country_name}' не найдены")
+            return []
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return None
+
+films_director = filter_films_by_director('Louis Leterrier')
+print(films_director)  # Печатает фильмы, найденные для режиссера 'Gore Verbinski'
+
+# Проверка функции filter_films_by_country
+films_country = filter_films_by_country('Japan')
+print(films_country)
+@app.route('/filter_films', methods=['POST'])
+def filter_films():
+    filter_type = request.form.get('filter_type')
+    filter_value = request.form.get('filter_value')
+
+    if filter_type == 'director':
+        films = filter_films_by_director(filter_value)
+    elif filter_type == 'country':
+        films = filter_films_by_country(filter_value)
+    else:
+        films = []
+
+    if films is not None:
+        return jsonify(films)
+    else:
+        return jsonify({"error": "Произошла ошибка при фильтрации фильмов."})
+
+
+
 
 
 @app.route('/logout')

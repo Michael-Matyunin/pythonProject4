@@ -131,6 +131,65 @@ p:nth-of-type(2n) {
                 {% endfor %}
             </tbody>
         </table>
+<div>
+        <form onsubmit="sortFilms(document.getElementById('sort-select-films').value, event)">
+        <label for="sort-select-films">Сортировать фильмы по:</label>
+        <select id="sort-select-films" name="sort_by">
+            <option value="duration">Длительности</option>
+            <option value="year">Году выпуска</option>
+        </select>
+        <input type="submit" value="Сортировать">
+    </form>
+   <form onsubmit="filterByDirector(event)">
+    <label for="director-select">Выбрать режиссера:</label>
+    <select id="director-select" name="director_name" onchange="filterByDirector(event)">
+        {% for director in directors %}
+            <option value="{{ director }}">{{ director }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Фильтровать">
+</form>
+
+<form onsubmit="filterByCountry(event)">
+    <label for="country-select">Выбрать страну:</label>
+    <select id="country-select" name="country_name" onchange="filterByCountry(event)">
+        {% for country in countries %}
+            <option value="{{ country }}">{{ country }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Фильтровать">
+</form>
+
+
+            <h2>Фильмы:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Длительность</th>
+                    <th>Год выпуска</th>
+                    <th>Страна</th>
+                    <th>Режиссер</th>
+                </tr>
+            </thead>
+            <tbody id="films-table">
+                <!-- Здесь будут строки таблицы с подписками -->
+                {% for film in films %}
+                <tr>
+                    <td>{{ film[0] }}</td>
+                    <td>{{ film[1] }}</td>
+                    <td>{{ film[2] }}</td>
+                    <td>{{ film[3] }}</td>
+                    <td>{{ film[4] }}</td>
+                    <td>{{ film[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+
 
 
          <form action="/change_password" method="post">
@@ -145,7 +204,7 @@ p:nth-of-type(2n) {
         </form>
         <p id="password-change-message" style="color: green; display: none;">Пароль успешно изменен</p>
 
-   <script>
+<script>
 function sortSubscriptions(sortBy, event) {
     event.preventDefault();
 
@@ -168,6 +227,76 @@ function sortSubscriptions(sortBy, event) {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send("sort_by=" + sortBy);
 }
+
+
+
+
+
+function sortFilms(sortBy, event) {
+        event.preventDefault();
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200) {
+        var responseData = JSON.parse(this.responseText);
+
+        var tableBody = document.getElementById("films-table");
+        tableBody.innerHTML = ""; // Очищаем текущее содержимое таблицы
+
+        responseData.forEach(function (film) {
+            var row = `<tr><td>${film.id}</td><td>${film.title}</td><td>${film.duration}</td><td>${film.year}</td><td>${film.country}</td><td>${film.director}</td></tr>`;
+            tableBody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+};
+
+
+        xhttp.open("POST", "/sort_films", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send("sort_by=" + sortBy);
+    }
+
+function filterByDirector(event) {
+    event.preventDefault();
+    var directorName = document.getElementById("director-select").value;
+    filterFilms('director', directorName);
+}
+
+function filterByCountry(event) {
+    event.preventDefault();
+    var countryName = document.getElementById("country-select").value;
+    filterFilms('country', countryName);
+}
+
+function filterFilms(filterType, filterValue) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                var responseData = JSON.parse(this.responseText);
+                var tableBody = document.getElementById("films-table");
+                tableBody.innerHTML = ""; // Очищаем содержимое таблицы перед обновлением
+
+                for (var i = 0; i < responseData.length; i++) {
+                    var film = responseData[i];
+                    var row = "<tr>";
+                    for (var j = 0; j < film.length; j++) {
+                        row += `<td>${film[j]}</td>`;
+                    }
+                    row += "</tr>";
+                    tableBody.insertAdjacentHTML("beforeend", row);
+                }
+            } else {
+                console.error('Ошибка при получении данных о фильмах');
+            }
+        }
+    };
+
+    xhttp.open("POST", "/filter_films", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send("filter_type=" + filterType + "&filter_value=" + filterValue);
+}
+
 
 
 
