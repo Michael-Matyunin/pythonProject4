@@ -85,6 +85,63 @@ p:nth-of-type(2n) {
     th:hover {
         background-color: #ddd;
     }
+        .button-more {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #3498db; /* Цвет фона кнопки */
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили для наведения на кнопку */
+.button-more:hover {
+    background-color: #2980b9; /* Цвет фона при наведении */
+}
+        <style>
+/* Общие стили для форм */
+form {
+    margin-bottom: 20px;
+}
+
+/* Стили для label */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Стили для select */
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+/* Стили для input[type="submit"] */
+input[type="submit"] {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили для input[type="submit"] при наведении */
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+
 
 
     </style>
@@ -133,18 +190,19 @@ p:nth-of-type(2n) {
         </table>
 <div>
         <form onsubmit="sortFilms(document.getElementById('sort-select-films').value, event)">
-        <label for="sort-select-films">Сортировать фильмы по:</label>
-        <select id="sort-select-films" name="sort_by">
-            <option value="duration">Длительности</option>
-            <option value="year">Году выпуска</option>
-        </select>
-        <input type="submit" value="Сортировать">
-    </form>
-   <form onsubmit="filterByDirector(event)">
+    <label for="sort-select-films">Сортировать фильмы по:</label>
+    <select id="sort-select-films" name="sort_by">
+        <option value="duration">Длительности</option>
+        <option value="year">Году выпуска</option>
+    </select>
+    <input type="submit" value="Сортировать">
+</form>
+
+<form onsubmit="filterByDirector(event)">
     <label for="director-select">Выбрать режиссера:</label>
     <select id="director-select" name="director_name" onchange="filterByDirector(event)">
         {% for director in directors %}
-            <option value="{{ director }}">{{ director }}</option>
+        <option value="{{ director }}">{{ director }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Фильтровать">
@@ -154,11 +212,12 @@ p:nth-of-type(2n) {
     <label for="country-select">Выбрать страну:</label>
     <select id="country-select" name="country_name" onchange="filterByCountry(event)">
         {% for country in countries %}
-            <option value="{{ country }}">{{ country }}</option>
+        <option value="{{ country }}">{{ country }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Фильтровать">
 </form>
+
 
 
             <h2>Фильмы:</h2>
@@ -187,6 +246,7 @@ p:nth-of-type(2n) {
                 {% endfor %}
             </tbody>
         </table>
+    <button class="button-more" onclick="window.location.href='{{ url_for('movies') }}'">Подробнее о фильмах</button>
 </div>
 
 
