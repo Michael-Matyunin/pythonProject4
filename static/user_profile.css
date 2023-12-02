@@ -1,0 +1,151 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8; /* Немного светлее фона */
+    color: #444;
+}
+
+/* Стили для заголовков */
+h1 {
+    text-align: center;
+    margin-top: 30px; /* Немного больше отступ сверху */
+    color: #2c3e50; /* Нейтральный темно-синий цвет */
+    font-size: 36px; /* Увеличим размер заголовка */
+}
+
+h2 {
+    margin-bottom: 15px; /* Увеличим отступ снизу у второстепенных заголовков */
+    color: #e67e22; /* Живой оранжевый цвет */
+    font-size: 24px; /* Увеличим размер второстепенных заголовков */
+}
+
+/* Стили для контейнера данных пользователя */
+div {
+    width: 90%; /* Немного более широкий контейнер */
+    max-width: 600px; /* Ограничим максимальную ширину контейнера */
+    margin: 30px auto; /* Увеличим внешние отступы */
+    background-color: #fff;
+    padding: 30px; /* Больше внутренних отступов */
+    border-radius: 12px; /* Более округлые углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Немного более заметная тень */
+}
+
+/* Стили для данных пользователя */
+p {
+    margin-bottom: 12px; /* Немного больше отступ между данными пользователя */
+    color: #555;
+    font-size: 16px; /* Немного меньший размер текста */
+    line-height: 1.6; /* Увеличим межстрочный интервал для лучшей читаемости */
+}
+
+strong {
+    font-weight: bold;
+    color: #27ae60; /* Оживленный зеленый для выделения */
+}
+
+/* Добавление стилей для определенных элементов */
+/* Например, для логина и email */
+p:nth-of-type(2n) {
+    color: #9b59b6; /* Пурпурный цвет для четных параграфов */
+    }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Подсветка заголовка при наведении */
+    th:hover {
+        background-color: #ddd;
+    }
+        .button-more {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #3498db; /* Цвет фона кнопки */
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили для наведения на кнопку */
+.button-more:hover {
+    background-color: #2980b9; /* Цвет фона при наведении */
+}
+        <style>
+/* Общие стили для форм */
+form {
+    margin-bottom: 20px;
+}
+
+/* Стили для label */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Стили для select */
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+/* Стили для input[type="submit"] */
+input[type="submit"] {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили для input[type="submit"] при наведении */
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+.home-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #3498db; /* Цвет ссылки */
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        /* Стили при наведении на ссылку */
+        .home-link:hover {
+            color: #2980b9; /* Измененный цвет при наведении */
+        }

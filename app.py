@@ -1,4 +1,5 @@
 import mysql.connector
+from datetime import datetime
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 
 mydb = mysql.connector.connect(
@@ -15,9 +16,6 @@ app.secret_key = '3794374927492734092749274'
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -46,28 +44,36 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        print(request.form)  # Print form data for debugging
-        login = request.form['loginUsername']  # Updated to match the form field names
-        password = request.form['loginPassword']  # Updated to match the form field names
+        login = request.form['loginUsername']
+        password = request.form['loginPassword']
 
         try:
             mycursor = mydb.cursor()
             query = "SELECT * FROM user WHERE Login = %s AND Password = %s"
             user_data = (login, password)
             mycursor.execute(query, user_data)
-            user = mycursor.fetchone()
+            user = mycursor.fetchone()  # Получаем данные пользователя из базы данных
 
-            # Ваш код для успешной аутентификации пользователя
             if user:
-                # Successful login
                 session['user'] = login  # Добавляем пользователя в сессию
-                return render_template('login_success.html')
+
+                # Обновляем время последнего входа в базе данных
+                try:
+                    update_query = "UPDATE user SET Last_Login = %s WHERE Login = %s"
+                    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    user_data = (current_time, login)
+                    mycursor.execute(update_query, user_data)
+                    mydb.commit()
+                    mycursor.close()
+
+                    return render_template('login_success.html')
+                except mysql.connector.Error as err:
+                    print("Ошибка при обновлении времени последнего входа:", err)
+                    return "Ошибка при входе."
             else:
-                # Failed login attempt
                 return "Login failed. Please check your credentials."
 
         except mysql.connector.Error as err:
-            # Обработка ошибок, например, вывод сообщения об ошибке в консоль для отладки
             print("Ошибка при выполнении запроса к базе данных:", err)
             return "Произошла ошибка при попытке входа."
         finally:
@@ -80,7 +86,6 @@ import json
 
 
 # Вместо возврата HTML вернем данные в формате JSON
-
 
 
 @app.route('/sort_subscriptions', methods=['POST'])
@@ -113,6 +118,7 @@ def get_subscriptions(sort_by=None):
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
 
+
 # Получение данных из таблицы user
 @app.route('/user_profile/<username>')
 def show_user_profile(username):
@@ -123,11 +129,10 @@ def show_user_profile(username):
 
     if user_data:
         films = get_films()  # Получение фильмов
-        return render_template('user_profile.html', user=user_data, subscriptions=subscriptions, films=films, directors=directors, countries=countries)
+        return render_template('user_profile.html', user=user_data, subscriptions=subscriptions, films=films,
+                               directors=directors, countries=countries)
     else:
         return "Пользователь не найден"
-
-
 
 
 @app.route('/sort_films', methods=['POST'])
@@ -198,6 +203,8 @@ def get_countries():
     except mysql.connector.Error as err:
         print("Ошибка при выполнении запроса к базе данных:", err)
         return []
+
+
 def filter_films_by_director(director_name):
     try:
         cursor = mydb.cursor()
@@ -214,6 +221,7 @@ def filter_films_by_director(director_name):
     except mysql.connector.Error as err:
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
+
 
 def filter_films_by_country(country_name):
     try:
@@ -232,12 +240,15 @@ def filter_films_by_country(country_name):
         print("Ошибка при выполнении запроса к базе данных:", err)
         return None
 
+
 films_director = filter_films_by_director('Louis Leterrier')
 print(films_director)  # Печатает фильмы, найденные для режиссера 'Gore Verbinski'
 
 # Проверка функции filter_films_by_country
 films_country = filter_films_by_country('Japan')
 print(films_country)
+
+
 @app.route('/filter_films', methods=['POST'])
 def filter_films():
     filter_type = request.form.get('filter_type')
@@ -254,9 +265,6 @@ def filter_films():
         return jsonify(films)
     else:
         return jsonify({"error": "Произошла ошибка при фильтрации фильмов."})
-
-
-
 
 
 @app.route('/logout')

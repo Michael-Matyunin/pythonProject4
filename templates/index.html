@@ -8,27 +8,42 @@
     <!-- Любые другие стили или скрипты -->
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Главная</a></li>
-            <li><a href="{{ url_for('movies') }}">Фильмы</a></li> <!-- Добавленная ссылка -->
+   <header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Главная</a></li>
+            <li><a href="{{ url_for('movies') }}">Фильмы</a></li>
             <li><a href="#">Контакты</a></li>
             <li class="right-btns">
-                <a href="{{ url_for('login') }}" class="auth-btn">Войти</a>
-                <a href="{{ url_for('register') }}" class="register-btn">Регистрация</a>
+                {% if 'user' in session %}
+                    <p class="greeting">Привет, {{ session['user'] }}!</p>
+                    <a href="{{ url_for('show_user_profile', username=session['user']) }}" class="auth-btn">Личный кабинет</a>
+                    <a href="{{ url_for('logout') }}" class="auth-btn">Выйти</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="auth-btn">Войти</a>
+                    <a href="{{ url_for('register') }}" class="register-btn">Регистрация</a>
+                {% endif %}
             </li>
-            </ul>
-        </nav>
-    </header>
+        </ul>
+    </nav>
+</header>
 
-    <main>
-        <div class="hero">
-            <h1 class="animated-header">Добро пожаловать!</h1>
+
+<main>
+    <div class="hero">
+        <h1 class="animated-header">Добро пожаловать!</h1>
+    </div>
+
+    <section class="movie-cards">
+        <div class="movie-card">
+            <img src="link_to_movie_poster.jpg" alt="Название фильма">
+            <h2>Название фильма</h2>
+            <p>Краткое описание фильма...</p>
+            <a href="{{ url_for('movie_details', movie_id=1) }}" class="details-btn">Подробнее</a>
         </div>
-
-
-    </main>
+        <!-- Добавьте другие карточки фильмов аналогичным образом -->
+    </section>
+</main>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
