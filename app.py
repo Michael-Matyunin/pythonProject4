@@ -119,20 +119,24 @@ def get_subscriptions(sort_by=None):
         return None
 
 
-# Получение данных из таблицы user
+# Отображение данных в user_profile
 @app.route('/user_profile/<username>')
 def show_user_profile(username):
     user_data = get_user_data(username)
     subscriptions = get_subscriptions()  # Получение подписок
     directors = get_directors()  # Получение списка режиссеров
     countries = get_countries()  # Получение списка стран
+    countries_actors = filter_actors_by_country
+
+    actors = get_actors_data()  # Получение данных об актерах
 
     if user_data:
         films = get_films()  # Получение фильмов
         return render_template('user_profile.html', user=user_data, subscriptions=subscriptions, films=films,
-                               directors=directors, countries=countries)
+                               directors=directors, countries=countries, actors=actors, countries_actors=countries_actors)
     else:
         return "Пользователь не найден"
+
 
 
 @app.route('/sort_films', methods=['POST'])
@@ -265,6 +269,75 @@ def filter_films():
         return jsonify(films)
     else:
         return jsonify({"error": "Произошла ошибка при фильтрации фильмов."})
+
+
+@app.route('/actors')
+def get_actors_data():
+    try:
+        cursor = mydb.cursor()
+        query = "SELECT ID_Actor, Name, Last_Name, Place_birth, pupular_film FROM actor"
+        cursor.execute(query)
+        actors_data = cursor.fetchall()
+        cursor.close()
+
+        # Преобразование данных об актерах в список словарей
+        actors_list = []
+        for actor in actors_data:
+            actor_dict = {
+                'ID_Actor': actor[0],
+                'Name': actor[1],
+                'Last_Name': actor[2],
+                'Place_birth': actor[3],
+                'pupular_film': actor[4]
+            }
+            actors_list.append(actor_dict)
+
+        return actors_list
+
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return "Произошла ошибка при получении данных об актерах"
+
+
+def filter_actors_by_country(country_name):
+    try:
+        if not country_name:
+            print("Не указано название страны для фильтрации актеров")
+            return []
+
+        cursor = mydb.cursor()
+        query = "SELECT ID_Actor, Name, Last_Name, Place_birth, pupular_film FROM actor WHERE Country = %s"
+        cursor.execute(query, (country_name,))
+        actors = cursor.fetchall()
+        cursor.close()
+
+        print(f"Получен запрос на фильтрацию актеров по стране '{country_name}'")
+        if actors:
+            print(f"Найдено актеров для страны '{country_name}': {len(actors)}")
+            return actors
+        else:
+            print(f"Актеры для страны '{country_name}' не найдены")
+            return []
+    except mysql.connector.Error as err:
+        print("Ошибка при выполнении запроса к базе данных:", err)
+        return None
+
+
+@app.route('/filter_actors', methods=['POST'])
+def filter_actors():
+    filter_type = request.form.get('filter_type')
+    filter_value = request.form.get('filter_value')
+
+    if filter_type == 'country':
+        actors = filter_actors_by_country(filter_value)
+    # Можно добавить другие условия для фильтрации актеров по другим критериям, если нужно
+
+    if actors is not None:
+        return jsonify(actors)
+    else:
+        return jsonify({"error": "Произошла ошибка при фильтрации актеров."})
+
+
 
 
 @app.route('/logout')
